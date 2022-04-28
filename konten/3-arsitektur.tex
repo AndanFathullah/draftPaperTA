@@ -1,10 +1,13 @@
 % Ubah judul dan label berikut sesuai dengan yang diinginkan.
-\section{Metodologi}
+\section{Desain dan Implementasi Sistem}
 \label{sec:arsitektur}
 
 % Ubah paragraf-paragraf pada bagian ini sesuai dengan yang diinginkan.
 
-Metodologi yang digunakan dalam pengerjaan Tugas Akhir ini adalah sebagai berikut.
+Penelitian ini dilaksanakan sesuai dengan desain sistem berikut dengan implementasinya. Desain sistem merupakan konsep dari
+pembuatan dan perancangan infrastruktur dan kemudian diwujudkan dalam bentuk blok-blok alur yang harus dikerjakan. Pada 
+bagian implementasi merupakan pelaksanaan teknis untuk setiap blok pada desain sistem. Gambar 3.2 menunjukkan bagan umum 
+metodologi sistem.
 \begin{figure} [ht]
   \centering
   % Ubah sesuai dengan nama file gambar dan ukuran yang akan digunakan.
@@ -15,24 +18,25 @@ Metodologi yang digunakan dalam pengerjaan Tugas Akhir ini adalah sebagai beriku
   \label{fig:metodologi}
 \end{figure}
 
-
-Pada tahap awal, dataset yang digunakan akan dicek dan dibagi berdasarkan training, validation dan 
-testing, serta menyiapkan dataset untuk digunakan pada pembuatan model nantinya. Kemudian 
-memilih model atau arsitektur Convolutional Neural Network atau CNN yang tepat sesuai dengan UTKFace 
+Pada tahap awal, dataset yang digunakan akan dicek dan dibagi berdasarkan \textit{training}, \textit{validation} dan 
+\textit{testing}, serta menyiapkan dataset untuk digunakan pada pembuatan model nantinya. Kemudian 
+memilih model atau arsitektur \textit{Convolutional Neural Network} atau \textit{CNN} yang tepat sesuai dengan UTKFace 
 dataset yang telah disediakan sebelumnya dan membangun model untuk keperluan training.
 Di tahap training, dataset akan digunakan untuk melatih komputer dengan cara mengolah gambar dan anotasi 
 yang telah dibuat sehingga terbentuk pola atau karakteristik dari masing masing kelas yang akan 
 menjadi bahan pertimbangan komputer dalam mencapai sebuah keputusan atau melakukan prediksi. 
-Proses training akan dilakukan menggunakan Covolutional Neural Network atau CNN pada citra wajah 
+Proses training akan dilakukan menggunakan \textit{Covolutional Neural Network} atau \textit{CNN} pada citra wajah 
 yang diberikan. Model yang sudah jadi akan dievaluasi dan dilakukan testing dengan dataset
-yang telah disediakan. Untuk meningkatkan akurasi, akan dilakukan pengaturan untuk 
-meningkatkan peforma dan keakuratan model.
-
+yang telah disediakan. Selain itu juga membuat prototype sistem sebagai gambaran implementasi penggunaan model.
 
 \subsection{Pengolahan Dataset}
 \label{subsec:pengolahandataset}
 
-Pada cetak biru yang tertera pada Gambar \ref{fig:pengolahandataset}. \lipsum[8]
+Dataset yang digunakan dalam Tugas Akhir ini adalah dataset wajah UTKFace dengan rentan umur dari 0 hingga 116 tahun. 
+Terdiri atas lebih dari 20.000 gambar wajah dengan anotasi umur, jenis kelamin dan etnik. Sebelum menggunakannya,
+dataset ini akan melalui fase pengolahan terlebih dahulu dengan membagi, menyesuaikan ukuran dan mengatur jumlah batch
+yang digunakan dalam pembuatan model.  
+Dalam dataset UTFace label sudah tersedia pada format nama dari masing-masing gambarnya yaitu umur, gender dan ras.
 
 % Contoh input gambar pada kolom.
 \begin{figure} [ht]
@@ -45,12 +49,104 @@ Pada cetak biru yang tertera pada Gambar \ref{fig:pengolahandataset}. \lipsum[8]
   \label{fig:pengolahandataset}
 \end{figure}
 
-\lipsum[9-10]
+Dikarenakan label umur dari dataset menggunakan umur dalam bentuk angka, untuk menyesuaikan
+kelas yang sesuai untuk model nantinya, harus dikategorikan menjadi Balita, Anak, Remaja, Dewasa, Lansia dan Manula. 
+Persebaran masing-masing gambar berdasarkan umur, gender dan ras dapat dilihat pada tabel.
+
+\begin{table}
+  \caption{Persebaran Umur}
+  \label{tab:persebaranumur}
+  \centering
+  \begin{tabular}{ll}
+    \toprule
+    \textbf{Rentang Umur} & \textbf{Jumlah} \\
+    \midrule
+    Balita           & 2363           \\
+    Anak             & 920            \\ 
+    Remaja           & 4354           \\ 
+    Dewasa           & 10457          \\ 
+    Lansia           & 3912           \\ 
+    Manula           & 1699           \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}
+  \caption{Persebaran Gender}
+  \label{tab:persebarangender}
+  \centering
+  \begin{tabular}{ll}
+    \toprule
+    \textbf{Gender} & \textbf{Jumlah} \\
+    \midrule
+    Pria           & 12391           \\
+    Wanita         & 11314           \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}
+  \caption{Persebaran Ras}
+  \label{tab:persebaranras}
+  \centering
+  \begin{tabular}{ll}
+    \toprule
+    \textbf{Ras} & \textbf{Jumlah} \\
+    \midrule
+    White           & 10078           \\
+    Black           & 4526            \\
+    Indian          & 3975            \\
+    Asian           & 3434            \\
+    Other           & 1692            \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Selanjutnya dataset akan dibagi menjadi Training, Validation dan Testing untuk memastikan keakuratan model dengan tidak menggunakan dataset 
+yang sama pada setiap tahapannya. Untuk pembagiannya, pada tahap training akan menggunakan setengah 
+dari total dataset yang ada, tahap validation menggunakan sebesar 0.2 dari total dataset dan pada 
+testing menggunakan 0.3 dari total dataset yang ada.
+
+\begin{table}
+  \caption{Pembagian Dataset}
+  \label{tab:pembagiandataset}
+  \centering
+  \begin{tabular}{ll}
+    \toprule
+    \textbf{Pembagian} & \textbf{Jumlah} \\
+    \midrule
+    Training           & 11615          \\
+    Validation         & 4978            \\
+    Testing            & 7112            \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Ukuran Dataset yang ada diubah menjadi 198 x 198 pixel dan mengubah format dari gambar menjadi format array dan membaginya dengan 255 agar
+format arraynya menjadi rentang 0 sampai 1. Terakhir untuk memasukan dataset ke dalam model, akan dibuat data generator yang akan 
+memasukkan gambar dan label yang telah disimpan ke dalam model dan membaginya proses pemasukan gambar berdasarkan ukuran batch 
+untuk menghemat memory yang digunakan dengan tidak memuat semua dataset dalam satu waktu.
+
 
 \subsection{Pembuatan dan Training Model}
 \label{subsec:model}
 
-\lipsum[11]
+Setelah dataset siap digunakan untuk training, selanjutnya menentukan arsitektur model mana yang cocok untuk digunakan.
+Terdapat beberapa arsitektur \textit{Convolutional Neural Network} yang sudah terbukti cocok digunakan dalam kasus 
+klasifikasi dengan input gambar. Dalam hal ini arsitektur yang digunakan adalah \textit{ResNet50, VGG16, Inception V3} dan \textit{EfficienNet B0} 
+dengan mencoba \textit{weight} dan \textit{optimizer} yang berbeda-beda. Selain menggunakan arsitektur model yang sudah ada, dilakukan 
+juga percobaan menggunakan arsitektur sederhana \textit{Convolutional Neural Network} untuk nantinya dibandingkan dengan arsitektur 
+yang ada. \par
+
+Metric merupakan indikator yang menunjukkan apakah model yang ditraining menghasilkan prediksi yang bagus atau tidak. Ada berbagai jenis 
+metric yang bisa digunakan, namun di sini hanya menggunakan accuracy dan loss untuk mengitung tingkat keberhasilan model yang digunakan. 
+Untuk penghitungan metricnya akan dilakukan sebanyak dua kali yaitu pada saat Training dan Validation yang menggunakan dataset yang telah 
+dibagi sebelumnya. Kemudian membandingkan hasil accuracy dan loss Training dengan Validation. \par
+
+Selanjutnya pada proses traning mengatur input dari dataset yang akan diberikan ke model, dimana diatur menjadi 198 x 198 dengan jumlah channel 3. 
+Yang kemudian akan dilakukan training menggunakan arsitektur CNN \textit{ResNet50, VGG16, Inception V3} dan \textit{EfficienNet B0} serta arsitektur CNN 
+sederhana yang telah dibuat sebelumnya. Setelah itu diberi layer terakhir berupa Dense Layer untuk memberikan output prediksinya berupa 
+umur, gender dan ras. 
 
 \begin{figure} [ht]
   \centering
@@ -62,42 +158,63 @@ Pada cetak biru yang tertera pada Gambar \ref{fig:pengolahandataset}. \lipsum[8]
   \label{fig:model}
 \end{figure}
 
-% Contoh pembuatan potongan kode.
-\begin{lstlisting}[
-  language=C++,
-  caption={Program halo dunia.},
-  label={lst:halodunia}
-]
-#include <iostream>
-
-int main() {
-    std::cout << "Halo Dunia!";
-    return 0;
-}
-\end{lstlisting}
-
-\lipsum[12]
-
-% Contoh pembuatan daftar.
-\begin{enumerate}
-  \item \lipsum[13][1-4]
-  \item \lipsum[13][5-8]
-  \item \lipsum[13][9-12]
-\end{enumerate}
-
-\lipsum[14-15]
-
 \subsection{Testing Model}
 \label{subsec:testing}
 
-\lipsum[11]
+Pada tahap ini testing dilakukan dengan tiga tahap seperti pada Gambar \ref{fig:testing}.
+\begin{figure} [ht]
+  \centering
+  % Ubah sesuai dengan nama file gambar dan ukuran yang akan digunakan.
+  \includegraphics[width=0.4\textwidth]{gambar/testing.jpg}
+
+  % Ubah sesuai dengan keterangan gambar yang diinginkan.
+  \caption{Urutan Pelasksanaan Testing}
+  \label{fig:testing}
+\end{figure}
+
+
+Setelah masing-masing proses training selesai, nilai dari loss dan akurasi pada masing-masing kelas akan dicetak berdasarkan jumlah epochnya 
+menggunakan diagram garis. Dalam diagram tersebut yang perlu diperhatikan adalah kesesuaian tingkat akurasi dan loss pada diagram sudah sesuai 
+atau belum. Kemudian melakukan testing dengan dataset yang telah disediakan sebelumnya menggunakan fungsi \textit{classification report} yang akan 
+menghitung nilai precision, recall dan f1-score nya sebagai acuan keakuratan model. Selanjutnya model akan dicoba pada prototype sistem untuk 
+memberikan gambaran penggunaan model pada kasus nyata. Sistem dibuat dalam bentuk aplikasi website yang dapat mendeteksi umur, gender dan ras 
+melalui foto wajah dan melalui webcam yang kemudian difoto untuk di prediksi umur, gender dan rasnya.
 
 \begin{figure} [ht]
   \centering
   % Ubah sesuai dengan nama file gambar dan ukuran yang akan digunakan.
-  \includegraphics[width=0.5\textwidth]{gambar/testing.jpg}
+  \includegraphics[width=0.4\textwidth]{gambar/webKosong.png}
 
   % Ubah sesuai dengan keterangan gambar yang diinginkan.
-  \caption{Urutan Testing Model}
-  \label{fig:testing}
+  \caption{Tampilan Web dengan inputan memilih dari folder}
+  \label{fig:webupload}
+\end{figure}
+
+\begin{figure} [ht]
+  \centering
+  % Ubah sesuai dengan nama file gambar dan ukuran yang akan digunakan.
+  \includegraphics[width=0.5\textwidth]{gambar/WebKosong2.png}
+
+  % Ubah sesuai dengan keterangan gambar yang diinginkan.
+  \caption{Tampilan Web dengan inputan foto dari webcam}
+  \label{fig:webfoto}
+\end{figure}
+
+Dikarenakan model yang dibuat memiliki format tertentu, maka dari itu input foto dari web juga harus diatur terlebih dahulu agar dapat diprediksi dengan 
+tepat oleh model. Model yang dibuat menggunakan ukuran foto 198 x 198 pixel, sehingga inputan berupa foto upload maupun dari webcam harus dipotong sesuai ukuran 
+tersebut. Selain itu, dalam dataset yang digunakan inputannya hanya sebatas wajah saja tidak terdapat bagian tubuh lainnya. \par
+
+Untuk mengatasi hal tersebut perlu suatu program yang dapat mendeteksi area wajah dalam suatu gambar yaitu dengan menggunakan fungsi Haarcascades pada OpenCV. 
+Fungsi tersebut akan mendeteksi area wajah pada gambar, kemudian menyimpan hasil deteksi tersebut ke dalam file foto baru. Hasil potongan wajah 
+kemudian diubah ukurannya menjadi 198 x 198 serta diubah ke dalam bentuk array sebelum dilakukan prediksi oleh model. Berikut adalah gambaran tahapan pengolahan 
+gambar pada web.
+
+\begin{figure} [ht]
+  \centering
+  % Ubah sesuai dengan nama file gambar dan ukuran yang akan digunakan.
+  \includegraphics[width=0.5\textwidth]{gambar/preprocessingWeb.jpg}
+
+  % Ubah sesuai dengan keterangan gambar yang diinginkan.
+  \caption{Preprocessing pada web}
+  \label{fig:preprocessingWeb}
 \end{figure}
